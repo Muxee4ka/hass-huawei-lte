@@ -11,3 +11,34 @@ suspend_integration:
       example: http://192.168.100.1/
       selector:
         text:
+
+sms_mark_read:
+  fields:
+    url:
+      example: http://192.168.100.1/
+      selector:
+        text:
+    index:
+      required: true
+      example: 40001
+      selector:
+        object:
+
+sms_delete:
+  fields:
+    url:
+      example: http://192.168.100.1/
+      selector:
+        text:
+    index:
+      required: true
+      example: 40001
+      selector:
+        object:
+
+sms_delete_read:
+  fields:
+    url:
+      example: http://192.168.100.1/
+      selector:
+        text:

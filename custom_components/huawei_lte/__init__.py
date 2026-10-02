@@ -38,7 +38,11 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 from homeassistant.helpers import (
     config_validation as cv,
     device_registry as dr,
@@ -55,6 +59,7 @@ from homeassistant.helpers.typing import ConfigType
 from .const import (
     ADMIN_SERVICES,
     ALL_KEYS,
+    ATTR_SMS_INDEX,
     CONF_MANUFACTURER,
     CONF_SMS_AFTER_RECEIVE,
     CONF_UNAUTHENTICATED_MODE,
@@ -83,10 +88,14 @@ from .const import (
     KEY_WLAN_WIFI_FEATURE_SWITCH,
     KEY_WLAN_WIFI_GUEST_NETWORK_SWITCH,
     SERVICE_RESUME_INTEGRATION,
+    SERVICE_SMS_DELETE,
+    SERVICE_SMS_DELETE_READ,
+    SERVICE_SMS_MARK_READ,
     SERVICE_SUSPEND_INTEGRATION,
     SMS_AFTER_RECEIVE_DELETE,
     SMS_AFTER_RECEIVE_MARK_READ,
     SMS_EVENT_SUBSCRIBER,
+    SMS_MAX_PAGES,
     SMS_PAGE_SIZE,
     SMS_RECEIVED_SIGNAL,
     SMS_SAVE_DELAY,
@@ -103,6 +112,15 @@ SCAN_INTERVAL = timedelta(seconds=30)
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 SERVICE_SCHEMA = vol.Schema({vol.Optional(CONF_URL): cv.url})
+
+SMS_INDEX_SERVICE_SCHEMA = SERVICE_SCHEMA.extend(
+    {vol.Required(ATTR_SMS_INDEX): vol.All(cv.ensure_list, [vol.Coerce(int)])}
+)
+SMS_SERVICE_SCHEMAS = {
+    SERVICE_SMS_MARK_READ: SMS_INDEX_SERVICE_SCHEMA,
+    SERVICE_SMS_DELETE: SMS_INDEX_SERVICE_SCHEMA,
+    SERVICE_SMS_DELETE_READ: SERVICE_SCHEMA,
+}
 
 PLATFORMS = [
     Platform.BINARY_SENSOR,
@@ -277,6 +295,16 @@ class Router:
         return self.client.sms.get_sms_list(
             page, BoxTypeEnum.LOCAL_INBOX, SMS_PAGE_SIZE, SortTypeEnum.DATE, False, False
         )
+
+    def sms_read_indexes(self) -> list[int]:
+        """Indexes of all read messages in the inbox, across pages."""
+        indexes: list[int] = []
+        for page in range(1, SMS_MAX_PAGES + 1):
+            batch = parse_sms_list(self._fetch_sms_page(page))
+            indexes.extend(sms.index for sms in batch if sms.read)
+            if len(batch) < SMS_PAGE_SIZE:
+                break
+        return indexes
 
     def _update_sms(self) -> None:
         """Fetch the inbox when counts moved and dispatch unseen messages."""
@@ -537,8 +565,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     hass.data[HUAWEI_LTE_CONFIG] = config
 
-    def service_handler(service: ServiceCall) -> None:
-        """Apply a service.
+    def _get_router(service: ServiceCall) -> Router | None:
+        """Find the router a service call targets.
 
         We key this using the router URL instead of its unique id / serial number,
         because the latter is not available anywhere in the UI.
@@ -551,7 +579,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             router = next((router for router in routers if router.url == url), None)
         elif not routers:
             _LOGGER.error("%s: no routers configured", service.service)
-            return
+            return None
         elif len(routers) == 1:
             router = routers[0]
         else:
@@ -560,9 +588,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                 service.service,
                 sorted(router.url for router in routers),
             )
-            return
+            return None
         if not router:
             _LOGGER.error("%s: router %s unavailable", service.service, url)
+        return router
+
+    def service_handler(service: ServiceCall) -> None:
+        """Apply a service."""
+        if not (router := _get_router(service)):
             return
 
         if service.service == SERVICE_RESUME_INTEGRATION:
@@ -576,6 +609,22 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         else:
             _LOGGER.error("%s: unsupported service", service.service)
 
+    def sms_service_handler(service: ServiceCall) -> None:
+        """Apply an SMS management service."""
+        if not (router := _get_router(service)):
+            return
+        if service.service == SERVICE_SMS_MARK_READ:
+            action, indexes = router.client.sms.set_read, service.data[ATTR_SMS_INDEX]
+        elif service.service == SERVICE_SMS_DELETE:
+            action, indexes = router.client.sms.delete_sms, service.data[ATTR_SMS_INDEX]
+        else:
+            action, indexes = router.client.sms.delete_sms, None
+        try:
+            for index in indexes if indexes is not None else router.sms_read_indexes():
+                action(index)
+        except ResponseErrorException as ex:
+            raise HomeAssistantError(f"{service.service} failed: {ex}") from ex
+
     for service in ADMIN_SERVICES:
         async_register_admin_service(
             hass,
@@ -583,6 +632,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             service,
             service_handler,
             schema=SERVICE_SCHEMA,
+        )
+    for service, schema in SMS_SERVICE_SCHEMAS.items():
+        async_register_admin_service(
+            hass, DOMAIN, service, sms_service_handler, schema=schema
         )
 
     return True

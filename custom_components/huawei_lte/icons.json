@@ -195,6 +195,15 @@
     "resume_integration": {
       "service": "mdi:play-pause"
     },
+    "sms_delete": {
+      "service": "mdi:delete"
+    },
+    "sms_delete_read": {
+      "service": "mdi:delete-sweep"
+    },
+    "sms_mark_read": {
+      "service": "mdi:email-open"
+    },
     "suspend_integration": {
       "service": "mdi:pause"
     }
