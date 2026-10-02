@@ -1,0 +1,8 @@
+hass-huawei-lte
+Copyright 2026 Muxee4ka
+
+This product is a modified copy of the Huawei LTE integration from
+Home Assistant Core (https://github.com/home-assistant/core),
+Copyright Home Assistant contributors, licensed under the Apache License 2.0.
+Base version: see UPSTREAM_VERSION. Modifications: incoming SMS event entity,
+SMS management services, after-receive option, forwarding blueprint.
