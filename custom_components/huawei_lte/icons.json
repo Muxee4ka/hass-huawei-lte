@@ -32,6 +32,11 @@
         }
       }
     },
+    "event": {
+      "incoming_sms": {
+        "default": "mdi:message-text"
+      }
+    },
     "select": {
       "preferred_network_mode": {
         "default": "mdi:antenna"

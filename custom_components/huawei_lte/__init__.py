@@ -11,6 +11,7 @@ from xml.parsers.expat import ExpatError
 
 from huawei_lte_api.Client import Client
 from huawei_lte_api.Connection import Connection
+from huawei_lte_api.enums.sms import BoxTypeEnum, SortTypeEnum
 from huawei_lte_api.exceptions import (
     LoginErrorInvalidCredentialsException,
     ResponseErrorException,
@@ -48,6 +49,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import dispatcher_send
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.service import async_register_admin_service
+from homeassistant.helpers.storage import Store
 from homeassistant.helpers.typing import ConfigType
 
 from .const import (
@@ -74,13 +76,20 @@ from .const import (
     KEY_NET_CURRENT_PLMN,
     KEY_NET_NET_MODE,
     KEY_SMS_SMS_COUNT,
+    KEY_SMS_SMS_LIST,
     KEY_WLAN_HOST_LIST,
     KEY_WLAN_WIFI_FEATURE_SWITCH,
     KEY_WLAN_WIFI_GUEST_NETWORK_SWITCH,
     SERVICE_RESUME_INTEGRATION,
     SERVICE_SUSPEND_INTEGRATION,
+    SMS_EVENT_SUBSCRIBER,
+    SMS_PAGE_SIZE,
+    SMS_RECEIVED_SIGNAL,
+    SMS_SAVE_DELAY,
+    SMS_STORE_VERSION,
     UPDATE_SIGNAL,
 )
+from .sms import Sms, SmsTracker, parse_sms_list
 from .utils import get_device_macs, non_verifying_requests_session
 
 _LOGGER = logging.getLogger(__name__)
@@ -95,6 +104,7 @@ PLATFORMS = [
     Platform.BINARY_SENSOR,
     Platform.BUTTON,
     Platform.DEVICE_TRACKER,
+    Platform.EVENT,
     Platform.SELECT,
     Platform.SENSOR,
     Platform.SWITCH,
@@ -122,6 +132,9 @@ class Router:
     inflight_gets: set[str] = field(default_factory=set, init=False)
     client: Client = field(init=False)
     suspended: bool = field(default=False, init=False)
+    sms_tracker: SmsTracker | None = field(default=None, init=False)
+    sms_store: Store[dict[str, Any]] | None = field(default=None, init=False)
+    _sms_count_signature: tuple[Any, Any] | None = field(default=None, init=False)
 
     def __post_init__(self) -> None:
         """Set up internal state on init."""
@@ -231,6 +244,7 @@ class Router:
         self._get_data(KEY_NET_CURRENT_PLMN, self.client.net.current_plmn)
         self._get_data(KEY_NET_NET_MODE, self.client.net.net_mode)
         self._get_data(KEY_SMS_SMS_COUNT, self.client.sms.sms_count)
+        self._update_sms()
         self._get_data(KEY_LAN_HOST_INFO, self.client.lan.host_info)
         if self.data.get(KEY_LAN_HOST_INFO):
             # LAN host info includes everything in WLAN host list
@@ -255,6 +269,45 @@ class Router:
 
         dispatcher_send(self.hass, UPDATE_SIGNAL, self.config_entry.unique_id)
 
+    def _fetch_sms_page(self, page: int) -> Any:
+        return self.client.sms.get_sms_list(
+            page, BoxTypeEnum.LOCAL_INBOX, SMS_PAGE_SIZE, SortTypeEnum.DATE, False, False
+        )
+
+    def _update_sms(self) -> None:
+        """Fetch the inbox when counts moved and dispatch unseen messages."""
+        subscribers = self.subscriptions.get(KEY_SMS_SMS_LIST)
+        if not subscribers:
+            return
+        counts = self.data.get(KEY_SMS_SMS_COUNT)
+        signature = (
+            (counts.get("LocalInbox"), counts.get("LocalUnread"))
+            if isinstance(counts, dict)
+            else None
+        )
+        if signature is not None and signature == self._sms_count_signature:
+            return
+        self.data.pop(KEY_SMS_SMS_LIST, None)
+        self._get_data(KEY_SMS_SMS_LIST, lambda: self._fetch_sms_page(1))
+        if KEY_SMS_SMS_LIST not in self.data or self.sms_tracker is None:
+            return  # failed or unsupported; retried next cycle if still subscribed
+        if SMS_EVENT_SUBSCRIBER not in subscribers:
+            return  # initial scan only probes support; entities are not listening yet
+        self._sms_count_signature = signature
+        new = self.sms_tracker.process(parse_sms_list(self.data[KEY_SMS_SMS_LIST]))
+        if self.sms_store is not None:
+            self.hass.loop.call_soon_threadsafe(
+                self.sms_store.async_delay_save, self.sms_tracker.as_data, SMS_SAVE_DELAY
+            )
+        for sms in new:
+            dispatcher_send(
+                self.hass, SMS_RECEIVED_SIGNAL, self.config_entry.entry_id, sms
+            )
+            self._sms_after_receive(sms)
+
+    def _sms_after_receive(self, sms: Sms) -> None:
+        """Apply the configured after-receive action."""
+
     def logout(self) -> None:
         """Log out router session."""
         try:
@@ -277,6 +330,10 @@ class Router:
 
 
 type HuaweiLteConfigEntry = ConfigEntry[Router]
+
+
+def _sms_store(hass: HomeAssistant, entry_id: str) -> Store[dict[str, Any]]:
+    return Store(hass, SMS_STORE_VERSION, f"{DOMAIN}.sms_seen.{entry_id}")
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: HuaweiLteConfigEntry) -> bool:
@@ -309,6 +366,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: HuaweiLteConfigEntry) ->
 
     # Set up router
     router = Router(hass, entry, connection, url)
+    router.sms_store = _sms_store(hass, entry.entry_id)
+    stored = await router.sms_store.async_load()
+    router.sms_tracker = SmsTracker(stored["seen"] if stored else None)
 
     # Do initial data update
     await hass.async_add_executor_job(router.update)
@@ -447,6 +507,13 @@ async def async_unload_entry(
     await hass.async_add_executor_job(config_entry.runtime_data.cleanup)
 
     return True
+
+
+async def async_remove_entry(
+    hass: HomeAssistant, config_entry: HuaweiLteConfigEntry
+) -> None:
+    """Drop the seen-SMS journal of a removed entry."""
+    await _sms_store(hass, config_entry.entry_id).async_remove()
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:

@@ -159,6 +159,7 @@
         'SimUnread': '0',
         'SimUsed': '0',
       }),
+      'sms_sms_list': '**REDACTED**',
       'wlan_wifi_feature_switch': dict({
         'acmode_enable': '1',
         'chinesessid_enable': '0',
