@@ -1,0 +1,75 @@
+blueprint:
+  name: Переслать SMS (Huawei LTE)
+  description: >-
+    Пересылает входящие SMS с модема Huawei в любое действие — Telegram,
+    push, notify. В тексте действия доступны переменные `phone`, `text`, `date`,
+    например: `📩 {{ phone }}: {{ text }}`.
+    Сравнение отправителей и слов — без учёта регистра.
+  domain: automation
+  source_url: https://github.com/Muxee4ka/hass-huawei-lte/blob/main/blueprints/automation/huawei_lte/forward_sms.yaml
+  input:
+    sms_event:
+      name: Входящее SMS
+      description: Event-сущность модема (event.*_incoming_sms).
+      selector:
+        entity:
+          filter:
+            - domain: event
+              integration: huawei_lte
+    forward_action:
+      name: Что сделать
+      description: Действие(я) пересылки; используйте {{ phone }}, {{ text }}, {{ date }}.
+      selector:
+        action: {}
+    allow_senders:
+      name: Только от отправителей
+      description: Если список не пуст — пересылать только этих.
+      default: []
+      selector:
+        text:
+          multiple: true
+    block_senders:
+      name: Глушить отправителей
+      default: []
+      selector:
+        text:
+          multiple: true
+    block_keywords:
+      name: Глушить по словам
+      description: Не пересылать, если текст содержит любое из слов.
+      default: []
+      selector:
+        text:
+          multiple: true
+
+mode: queued
+max: 20
+
+triggers:
+  - trigger: state
+    entity_id: !input sms_event
+
+variables:
+  allow_senders: !input allow_senders
+  block_senders: !input block_senders
+  block_keywords: !input block_keywords
+  phone: "{{ trigger.to_state.attributes.phone | default('') }}"
+  text: "{{ trigger.to_state.attributes.text | default('') }}"
+  date: "{{ trigger.to_state.attributes.date | default('') }}"
+
+conditions:
+  - condition: template
+    value_template: >-
+      {{ trigger.from_state is not none
+         and trigger.from_state.state != 'unavailable'
+         and trigger.to_state.state not in ['unavailable', 'unknown']
+         and trigger.to_state.attributes.event_type == 'received' }}
+  - condition: template
+    value_template: >-
+      {% set p = phone | lower %}
+      {% set allow = allow_senders | map('lower') | list %}
+      {{ (allow | count == 0 or p in allow)
+         and p not in (block_senders | map('lower') | list)
+         and (block_keywords | map('lower') | select('in', text | lower) | list | count == 0) }}
+
+actions: !input forward_action
