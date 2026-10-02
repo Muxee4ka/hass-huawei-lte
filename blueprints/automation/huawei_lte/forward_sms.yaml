@@ -2,8 +2,8 @@ blueprint:
   name: Переслать SMS (Huawei LTE)
   description: >-
     Пересылает входящие SMS с модема Huawei в любое действие — Telegram,
-    push, notify. В тексте действия доступны переменные `phone`, `text`, `date`,
-    например: `📩 {{ phone }}: {{ text }}`.
+    push, notify. В тексте действия доступна переменная `sms` с полями
+    `phone`, `text`, `date`, например: `📩 {{ sms.phone }}: {{ sms.text }}`.
     Сравнение отправителей и слов — без учёта регистра.
   domain: automation
   source_url: https://github.com/Muxee4ka/hass-huawei-lte/blob/main/blueprints/automation/huawei_lte/forward_sms.yaml
@@ -18,7 +18,7 @@ blueprint:
               integration: huawei_lte
     forward_action:
       name: Что сделать
-      description: Действие(я) пересылки; используйте {{ phone }}, {{ text }}, {{ date }}.
+      description: Действие(я) пересылки; используйте {{ sms.phone }}, {{ sms.text }}, {{ sms.date }}.
       selector:
         action: {}
     allow_senders:
@@ -53,9 +53,12 @@ variables:
   allow_senders: !input allow_senders
   block_senders: !input block_senders
   block_keywords: !input block_keywords
-  phone: "{{ trigger.to_state.attributes.phone | default('') }}"
-  text: "{{ trigger.to_state.attributes.text | default('') }}"
-  date: "{{ trigger.to_state.attributes.date | default('') }}"
+  # One dict, not separate variables: HA parses a template result, so a bare
+  # "+79161234567" would become the int 79161234567. Dict values stay strings.
+  sms: >-
+    {{ {'phone': trigger.to_state.attributes.phone | default('') | string,
+        'text': trigger.to_state.attributes.text | default('') | string,
+        'date': trigger.to_state.attributes.date | default('') | string} }}
 
 conditions:
   - condition: template
@@ -66,10 +69,10 @@ conditions:
          and trigger.to_state.attributes.event_type == 'received' }}
   - condition: template
     value_template: >-
-      {% set p = phone | lower %}
+      {% set p = sms.phone | lower %}
       {% set allow = allow_senders | map('lower') | list %}
       {{ (allow | count == 0 or p in allow)
          and p not in (block_senders | map('lower') | list)
-         and (block_keywords | map('lower') | select('in', text | lower) | list | count == 0) }}
+         and (block_keywords | map('lower') | select('in', sms.text | lower) | list | count == 0) }}
 
 actions: !input forward_action

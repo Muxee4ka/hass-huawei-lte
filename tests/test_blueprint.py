@@ -33,7 +33,7 @@ async def _setup(hass, tmp_path, **inputs):
                         "forward_action": [
                             {
                                 "action": "test.forward",
-                                "data": {"message": "{{ phone }}: {{ text }} ({{ date }})"},
+                                "data": {"message": "{{ sms.phone }}: {{ sms.text }} ({{ sms.date }})"},
                             }
                         ],
                         **inputs,
@@ -88,3 +88,25 @@ async def test_restore_does_not_forward(hass, tmp_path):
     _sms(hass, 1, "RSCHS", "old one restored after reload")
     await hass.async_block_till_done()
     assert calls == []
+
+
+async def test_numeric_sender_and_text_kept_as_strings(hass, tmp_path):
+    calls = await _setup(
+        hass, tmp_path, block_senders=["+79160000000"], allow_senders=[]
+    )
+    _sms(hass, 1, "+79160000000", "blocked")
+    _sms(hass, 2, "+79161234567", "1234")
+    _sms(hass, 3, "900", "None")
+    await hass.async_block_till_done()
+    assert [c.data["message"] for c in calls] == [
+        "+79161234567: 1234 (2026-10-02 15:00:00)",
+        "900: None (2026-10-02 15:00:00)",
+    ]
+
+
+async def test_allow_numeric_sender(hass, tmp_path):
+    calls = await _setup(hass, tmp_path, allow_senders=["+79161234567"])
+    _sms(hass, 1, "+79161234567", "ok")
+    _sms(hass, 2, "+79160000000", "no")
+    await hass.async_block_till_done()
+    assert [c.data["message"] for c in calls] == ["+79161234567: ok (2026-10-02 15:00:00)"]
