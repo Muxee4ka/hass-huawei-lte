@@ -11,8 +11,6 @@ for f in $FILES; do
   mkdir -p "$DEST/$(dirname "$rel")"
   curl -fsSL "https://raw.githubusercontent.com/home-assistant/core/$VER/$f" -o "$DEST/$rel"
 done
-# Default syrupy extension is in effect for these tests: it reads __snapshots__/, not core's snapshots/.
-if [ -d "$DEST/snapshots" ]; then mv "$DEST/snapshots" "$DEST/__snapshots__"; fi
 find "$DEST" -name '*.py' -exec sed -i -E \
   -e 's/homeassistant\.components\.huawei_lte/custom_components.huawei_lte/g' \
   -e 's/^from tests\.common import/from pytest_homeassistant_custom_component.common import/' \
