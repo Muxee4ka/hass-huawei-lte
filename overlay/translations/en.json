@@ -1,0 +1,52 @@
+{
+  "entity": {
+    "event": {
+      "incoming_sms": {
+        "name": "Incoming SMS",
+        "state_attributes": {
+          "event_type": {"state": {"received": "Received"}}
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {"sms_after_receive": "After an SMS is received"},
+        "data_description": {
+          "sms_after_receive": "What to do with an incoming SMS on the modem once its event has fired. Delete keeps the modem storage from filling up."
+        }
+      }
+    }
+  },
+  "selector": {
+    "sms_after_receive": {
+      "options": {"nothing": "Leave as is", "mark_read": "Mark as read", "delete": "Delete"}
+    }
+  },
+  "services": {
+    "sms_mark_read": {
+      "name": "Mark SMS as read",
+      "description": "Marks inbox messages as read on the modem.",
+      "fields": {
+        "url": {"name": "URL", "description": "URL of the router; optional when only one is configured."},
+        "index": {"name": "Index", "description": "Message index, or a list of them (from the incoming SMS event)."}
+      }
+    },
+    "sms_delete": {
+      "name": "Delete SMS",
+      "description": "Deletes inbox messages on the modem.",
+      "fields": {
+        "url": {"name": "URL", "description": "URL of the router; optional when only one is configured."},
+        "index": {"name": "Index", "description": "Message index, or a list of them (from the incoming SMS event)."}
+      }
+    },
+    "sms_delete_read": {
+      "name": "Delete read SMS",
+      "description": "Deletes every read message in the modem inbox.",
+      "fields": {
+        "url": {"name": "URL", "description": "URL of the router; optional when only one is configured."}
+      }
+    }
+  }
+}

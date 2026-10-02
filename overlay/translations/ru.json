@@ -1,0 +1,52 @@
+{
+  "entity": {
+    "event": {
+      "incoming_sms": {
+        "name": "Входящее SMS",
+        "state_attributes": {
+          "event_type": {"state": {"received": "Получено"}}
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {"sms_after_receive": "После получения SMS"},
+        "data_description": {
+          "sms_after_receive": "Что сделать с входящим SMS на модеме после того, как событие отправлено. Удаление не даёт памяти модема заполниться."
+        }
+      }
+    }
+  },
+  "selector": {
+    "sms_after_receive": {
+      "options": {"nothing": "Ничего", "mark_read": "Пометить прочитанным", "delete": "Удалить"}
+    }
+  },
+  "services": {
+    "sms_mark_read": {
+      "name": "Пометить SMS прочитанными",
+      "description": "Помечает сообщения во входящих на модеме прочитанными.",
+      "fields": {
+        "url": {"name": "URL", "description": "URL роутера; можно не указывать, если он один."},
+        "index": {"name": "Индекс", "description": "Индекс сообщения или их список (из события входящего SMS)."}
+      }
+    },
+    "sms_delete": {
+      "name": "Удалить SMS",
+      "description": "Удаляет сообщения во входящих на модеме.",
+      "fields": {
+        "url": {"name": "URL", "description": "URL роутера; можно не указывать, если он один."},
+        "index": {"name": "Индекс", "description": "Индекс сообщения или их список (из события входящего SMS)."}
+      }
+    },
+    "sms_delete_read": {
+      "name": "Удалить прочитанные SMS",
+      "description": "Удаляет все прочитанные сообщения во входящих модема.",
+      "fields": {
+        "url": {"name": "URL", "description": "URL роутера; можно не указывать, если он один."}
+      }
+    }
+  }
+}

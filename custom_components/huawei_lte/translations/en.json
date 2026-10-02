@@ -73,6 +73,18 @@
                 "name": "Clear traffic statistics"
             }
         },
+        "event": {
+            "incoming_sms": {
+                "name": "Incoming SMS",
+                "state_attributes": {
+                    "event_type": {
+                        "state": {
+                            "received": "Received"
+                        }
+                    }
+                }
+            }
+        },
         "select": {
             "preferred_network_mode": {
                 "name": "Preferred network mode",
@@ -387,15 +399,26 @@
                 "data": {
                     "name": "Notification service name (change requires restart)",
                     "recipient": "SMS notification recipients",
+                    "sms_after_receive": "After an SMS is received",
                     "track_wired_clients": "Track wired network clients",
                     "unauthenticated_mode": "Unauthenticated mode (change requires reload)"
                 },
                 "data_description": {
                     "name": "Used to distinguish between notification services in case there are multiple Huawei LTE devices configured. Changes to this option value take effect after Home Assistant restart.",
                     "recipient": "Comma-separated list of default recipient SMS phone numbers for the notification service, used in case the notification sender does not specify any.",
+                    "sms_after_receive": "What to do with an incoming SMS on the modem once its event has fired. Delete keeps the modem storage from filling up.",
                     "track_wired_clients": "Whether the device tracker entities track also clients attached to the router's wired Ethernet network, in addition to wireless clients.",
                     "unauthenticated_mode": "Whether to run in unauthenticated mode. Unauthenticated mode provides a limited set of features, but may help in case there are problems accessing the router's web interface from a browser while the integration is active. Changes to this option value take effect after integration reload."
                 }
+            }
+        }
+    },
+    "selector": {
+        "sms_after_receive": {
+            "options": {
+                "delete": "Delete",
+                "mark_read": "Mark as read",
+                "nothing": "Leave as is"
             }
         }
     },
@@ -409,6 +432,44 @@
                 }
             },
             "name": "Resume integration"
+        },
+        "sms_delete": {
+            "description": "Deletes inbox messages on the modem.",
+            "fields": {
+                "index": {
+                    "description": "Message index, or a list of them (from the incoming SMS event).",
+                    "name": "Index"
+                },
+                "url": {
+                    "description": "URL of the router; optional when only one is configured.",
+                    "name": "URL"
+                }
+            },
+            "name": "Delete SMS"
+        },
+        "sms_delete_read": {
+            "description": "Deletes every read message in the modem inbox.",
+            "fields": {
+                "url": {
+                    "description": "URL of the router; optional when only one is configured.",
+                    "name": "URL"
+                }
+            },
+            "name": "Delete read SMS"
+        },
+        "sms_mark_read": {
+            "description": "Marks inbox messages as read on the modem.",
+            "fields": {
+                "index": {
+                    "description": "Message index, or a list of them (from the incoming SMS event).",
+                    "name": "Index"
+                },
+                "url": {
+                    "description": "URL of the router; optional when only one is configured.",
+                    "name": "URL"
+                }
+            },
+            "name": "Mark SMS as read"
         },
         "suspend_integration": {
             "description": "Suspends integration. Suspending logs the integration out from the router, and stops accessing it. Useful e.g. if accessing the router web interface from another source such as a web browser is temporarily required. Invoke the 'Resume integration' action to resume.",
