@@ -1,0 +1,424 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Ure\u0111aj je ve\u0107 pode\u0161en",
+            "already_in_progress": "Ovo se ve\u0107 konfiguri\u0161e. Zavr\u0161ite postoje\u0107e pode\u0161avanje pre nego \u0161to poku\u0161ate ponovo.",
+            "reauth_successful": "Ponovna prijava je uspe\u0161na",
+            "unsupported_device": "Nepodr\u017ean ure\u0111aj"
+        },
+        "error": {
+            "connection_timeout": "Isteklo vreme veze",
+            "incorrect_password": "Neispravna lozinka",
+            "incorrect_username": "Neispravno korisni\u010dko ime",
+            "invalid_auth": "Neva\u017ee\u0107i podaci za prijavu",
+            "invalid_url": "Neispravna URL adresa",
+            "login_attempts_exceeded": "Prekora\u010den je maksimalan broj poku\u0161aja prijave, poku\u0161ajte ponovo kasnije",
+            "response_error": "Nepoznata gre\u0161ka sa ure\u0111aja",
+            "ssl_error_try_plain": "HTTPS gre\u0161ka, poku\u0161aj da koristi\u0161 obi\u010dan HTTP URL",
+            "ssl_error_try_unverified": "HTTPS gre\u0161ka, poku\u0161ajte da isklju\u010dite proveru potvrde ili koristite obi\u010dan HTTP URL",
+            "unknown": "Neo\u010dekivana gre\u0161ka"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Lozinka",
+                    "username": "Korisni\u010dko ime"
+                },
+                "data_description": {
+                    "password": "Lozinka za pristup API\u2011ju rutera. Obi\u010dno ista kao ona za web interfejs rutera.",
+                    "username": "Korisni\u010dko ime za pristup API-ju rutera. Obi\u010dno isto kao ono koje se koristi za web interfejs rutera. Naj\u010de\u0161\u0107e je `admin`, ili ostavljeno prazno (preporu\u010deno ako funkcioni\u0161e)."
+                },
+                "description": "Unesite pristupne podatke za ure\u0111aj.",
+                "title": "Prijava je istekla za {name}"
+            },
+            "user": {
+                "data": {
+                    "password": "Lozinka",
+                    "url": "URL adresa",
+                    "username": "Korisni\u010dko ime",
+                    "verify_ssl": "Proveri SSL potvrde"
+                },
+                "data_description": {
+                    "password": "Lozinka za pristup API\u2011ju rutera. Obi\u010dno ista kao ona za web interfejs rutera.",
+                    "url": "Osnovni URL za API rutera. Obi\u010dno izgleda kao `{sample_ip}`. To je po\u010detak adrese prikazane u pregleda\u010du prilikom pristupa web interfejsu rutera.",
+                    "username": "Korisni\u010dko ime za pristup API-ju rutera. Obi\u010dno isto kao ono koje se koristi za web interfejs rutera. Naj\u010de\u0161\u0107e je `admin`, ili ostavljeno prazno (preporu\u010deno ako funkcioni\u0161e).",
+                    "verify_ssl": "Da li treba proveriti SSL potvrdu rutera prilikom pristupa. Primjenjivo samo ako se ruteru pristupa putem HTTPS-a."
+                },
+                "description": "Unesi detalje za pristup ure\u0111aju.",
+                "title": "Pode\u0161avanje Huawei LTE integracije"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "24ghz_wifi_status": {
+                "name": "Wi-Fi status (2.4GHz)"
+            },
+            "5ghz_wifi_status": {
+                "name": "Wi-Fi status (5GHz)"
+            },
+            "mobile_connection": {
+                "name": "Mobilna veza"
+            },
+            "sms_storage_full": {
+                "name": "Memorija za SMS poruke je puna"
+            },
+            "wifi_status": {
+                "name": "Wi-Fi status"
+            }
+        },
+        "button": {
+            "clear_traffic_statistics": {
+                "name": "Obri\u0161i statistiku saobra\u0107aja"
+            }
+        },
+        "select": {
+            "preferred_network_mode": {
+                "name": "Preferisani re\u017eim mre\u017ee",
+                "state": {
+                    "00": "4G/3G/2G auto",
+                    "01": "2G samo",
+                    "02": "3G samo",
+                    "0201": "3G/2G auto",
+                    "03": "4G samo",
+                    "0301": "4G/2G auto",
+                    "0302": "4G/3G auto"
+                }
+            }
+        },
+        "sensor": {
+            "arfcn": {
+                "name": "ARFCN"
+            },
+            "band": {
+                "name": "Opseg"
+            },
+            "base_station_identity_code": {
+                "name": "Identifikacioni kod bazne stanice"
+            },
+            "battery": {
+                "name": "Baterija"
+            },
+            "cell_id": {
+                "name": "ID bazne stanice"
+            },
+            "cqi0": {
+                "name": "CQI 0"
+            },
+            "cqi1": {
+                "name": "CQI 1"
+            },
+            "current_connection_download": {
+                "name": "Preuzimanje trenutne veze"
+            },
+            "current_connection_duration": {
+                "name": "Trenutno trajanje veze"
+            },
+            "current_connection_upload": {
+                "name": "Trenutna brzina slanja"
+            },
+            "current_day_transfer": {
+                "name": "Prenos u teku\u0107em danu"
+            },
+            "current_download_rate": {
+                "name": "Trenutna brzina preuzimanja"
+            },
+            "current_month_download": {
+                "name": "Preuzimanje u teku\u0107em mesecu"
+            },
+            "current_month_upload": {
+                "name": "Slanje u teku\u0107em mesecu"
+            },
+            "current_upload_rate": {
+                "name": "Trenutna brzina slanja"
+            },
+            "downlink_bandwidth": {
+                "name": "Propusnost preuzimanja"
+            },
+            "downlink_frequency": {
+                "name": "Frekvencija preuzimanja"
+            },
+            "downlink_mcs": {
+                "name": "Silazni MCS"
+            },
+            "earfcn": {
+                "name": "EARFCN"
+            },
+            "ecio": {
+                "name": "EC/IO"
+            },
+            "enodeb_id": {
+                "name": "eNodeB ID"
+            },
+            "ims": {
+                "name": "IMS"
+            },
+            "lac": {
+                "name": "LAC"
+            },
+            "lte_downlink_frequency": {
+                "name": "LTE frekvencija preuzimanja"
+            },
+            "lte_uplink_frequency": {
+                "name": "LTE frekvencija slanja"
+            },
+            "max_download_rate": {
+                "name": "Maximum download rate"
+            },
+            "max_upload_rate": {
+                "name": "Maksimalna propusnost slanja"
+            },
+            "mode": {
+                "name": "Re\u017eim"
+            },
+            "nei_cellid": {
+                "name": "ID susedne \u0107elije"
+            },
+            "nrbler": {
+                "name": "5G stopa gre\u0161ke blokova"
+            },
+            "nrcqi0": {
+                "name": "5G CQI 0"
+            },
+            "nrcqi1": {
+                "name": "5G CQI 1"
+            },
+            "nrdlbandwidth": {
+                "name": "5G propusnost preuzimanja"
+            },
+            "nrdlmcs": {
+                "name": "5G silazni MCS"
+            },
+            "nrearfcn": {
+                "name": "5G EARFCN"
+            },
+            "nrrank": {
+                "name": "5G rang"
+            },
+            "nrrsrp": {
+                "name": "5G RSRP"
+            },
+            "nrrsrq": {
+                "name": "5G RSRQ"
+            },
+            "nrsinr": {
+                "name": "5G SINR"
+            },
+            "nrtxpower": {
+                "name": "5G snaga prenosa"
+            },
+            "nrulbandwidth": {
+                "name": "5G propusnost slanja"
+            },
+            "nrulmcs": {
+                "name": "5G uzlazni MCS"
+            },
+            "operator_code": {
+                "name": "Kod operatera"
+            },
+            "operator_name": {
+                "name": "Naziv operatera"
+            },
+            "operator_search_mode": {
+                "name": "Re\u017eim pretrage operatera",
+                "state": {
+                    "0": "Automatski",
+                    "1": "Ru\u010dno"
+                }
+            },
+            "pci": {
+                "name": "PCI"
+            },
+            "plmn": {
+                "name": "PLMN"
+            },
+            "preferred_network_mode": {
+                "name": "Preferisani re\u017eim mre\u017ee",
+                "state": {
+                    "00": "4G/3G/2G auto",
+                    "01": "2G samo",
+                    "02": "3G samo",
+                    "0201": "3G/2G auto",
+                    "03": "4G samo",
+                    "0301": "4G/2G auto",
+                    "0302": "4G/3G auto"
+                }
+            },
+            "primary_dns_server": {
+                "name": "Primarni DNS server"
+            },
+            "primary_ipv6_dns_server": {
+                "name": "Primarni IPv6 DNS server"
+            },
+            "rac": {
+                "name": "RAC"
+            },
+            "rrc_status": {
+                "name": "RRC status"
+            },
+            "rscp": {
+                "name": "RSCP"
+            },
+            "rsrp": {
+                "name": "RSRP"
+            },
+            "rsrq": {
+                "name": "RSRQ"
+            },
+            "rssi": {
+                "name": "RSSI"
+            },
+            "rxlev": {
+                "name": "Nivo primljenog signala"
+            },
+            "sc": {
+                "name": "Kod za razme\u0161avanje"
+            },
+            "secondary_dns_server": {
+                "name": "Sekundarni DNS server"
+            },
+            "secondary_ipv6_dns_server": {
+                "name": "Sekundarni IPv6 DNS server"
+            },
+            "sinr": {
+                "name": "SINR"
+            },
+            "sms_capacity_device": {
+                "name": "Kapacitet SMS poruka (ure\u0111aj)"
+            },
+            "sms_capacity_sim": {
+                "name": "Kapacitet SMS poruka (SIM)"
+            },
+            "sms_deleted_device": {
+                "name": "Obrisane SMS poruke (ure\u0111aj)"
+            },
+            "sms_drafts_device": {
+                "name": "Nacrti SMS poruka (ure\u0111aj)"
+            },
+            "sms_drafts_sim": {
+                "name": "Nacrti SMS poruka (SIM)"
+            },
+            "sms_inbox_device": {
+                "name": "Prijemno sandu\u010de SMS poruka (ure\u0111aj)"
+            },
+            "sms_inbox_sim": {
+                "name": "Prijemno sandu\u010de SMS poruka (SIM)"
+            },
+            "sms_messages_sim": {
+                "name": "SMS poruke (SIM)"
+            },
+            "sms_new": {
+                "name": "Nove SMS poruke"
+            },
+            "sms_outbox_device": {
+                "name": "Izlazne SMS poruke (ure\u0111aj)"
+            },
+            "sms_outbox_sim": {
+                "name": "Izlazne SMS poruke (SIM)"
+            },
+            "sms_unread": {
+                "name": "Nepro\u010ditane SMS poruke"
+            },
+            "sms_unread_device": {
+                "name": "Nepro\u010ditane SMS poruke (ure\u0111aj)"
+            },
+            "sms_unread_sim": {
+                "name": "Nepro\u010ditane SMS poruke (SIM)"
+            },
+            "tac": {
+                "name": "TAC"
+            },
+            "tdd": {
+                "name": "TDD"
+            },
+            "total_connected_duration": {
+                "name": "Ukupno vreme povezivanja"
+            },
+            "total_download": {
+                "name": "Ukupno preuzeto"
+            },
+            "total_upload": {
+                "name": "Ukupno slanje"
+            },
+            "transmission_mode": {
+                "name": "Re\u017eim prenosa"
+            },
+            "transmit_power": {
+                "name": "Snaga prenosa"
+            },
+            "uplink_bandwidth": {
+                "name": "Propusni opseg uzlaznog linka"
+            },
+            "uplink_frequency": {
+                "name": "Frekvencija uzlaznog linka"
+            },
+            "uplink_mcs": {
+                "name": "MCS uzlaznog linka"
+            },
+            "uptime": {
+                "name": "Vreme rada"
+            },
+            "wan_ip_address": {
+                "name": "WAN IP adresa"
+            },
+            "wan_ipv6_address": {
+                "name": "WAN IPv6 adresa"
+            },
+            "wdlfreq": {
+                "name": "WCDMA frekvencija silaznog linka"
+            },
+            "wifi_clients_connected": {
+                "name": "Povezani Wi-Fi klijenti"
+            }
+        },
+        "switch": {
+            "mobile_data": {
+                "name": "Mobilni podaci"
+            },
+            "wifi_guest_network": {
+                "name": "Gost Wi-Fi mre\u017ea"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "name": "Naziv servisa obave\u0161tavanja (promena zahteva ponovno pokretanje)",
+                    "recipient": "Primaoci SMS obave\u0161tenja",
+                    "track_wired_clients": "Prati klijente na \u017ei\u010dnoj Ethernet mre\u017ei",
+                    "unauthenticated_mode": "Neverifikovani re\u017eim (promena zahteva ponovno u\u010ditavanje)"
+                },
+                "data_description": {
+                    "name": "Koristi se za razlikovanje servisa obave\u0161tavanja u slu\u010daju da je konfigurisano vi\u0161e Huawei LTE ure\u0111aja. Promene ove opcije stupaju na snagu nakon ponovnog pokretanja Home Assistant-a.",
+                    "recipient": "Lista podrazumevanih SMS brojeva primaoca, odvojena zarezima, za servis obave\u0161tavanja, koja se koristi ako po\u0161iljalac obave\u0161tenja ne navede nijedan broj.",
+                    "track_wired_clients": "Da li entiteti za pra\u0107enje ure\u0111aja prate i klijente povezane na ruter putem \u017ei\u010dne Ethernet mre\u017ee, pored be\u017ei\u010dnih klijenata.",
+                    "unauthenticated_mode": "Da li pokrenuti u neverifikovanom re\u017eimu. Neverifikovani re\u017eim pru\u017ea ograni\u010den skup funkcija, ali mo\u017ee pomo\u0107i u slu\u010daju problema sa pristupom web interfejsu rutera iz pregleda\u010da dok je integracija aktivna. Promene ove opcije stupaju na snagu nakon ponovnog u\u010ditavanja integracije."
+                }
+            }
+        }
+    },
+    "services": {
+        "resume_integration": {
+            "description": "Nastavlja obustavljenu integraciju.",
+            "fields": {
+                "url": {
+                    "description": "URL rutera za nastavak integracije; opciono kada je konfigurisan samo jedan.",
+                    "name": "URL adresa"
+                }
+            },
+            "name": "Nastavi integraciju"
+        },
+        "suspend_integration": {
+            "description": "Obustavlja integraciju. Obustava odjavljuje integraciju sa rutera i zaustavlja pristup. Korisno npr. ako je privremeno potrebno pristupiti web interfejsu rutera iz drugog izvora, kao \u0161to je web pregleda\u010d. Pokrenite akciju \u201eNastavi integraciju\u201d da biste nastavili.",
+            "fields": {
+                "url": {
+                    "description": "URL rutera za obustavu integracije; opciono kada je konfigurisan samo jedan.",
+                    "name": "URL adresa"
+                }
+            },
+            "name": "Obustavi integraciju"
+        }
+    }
+}

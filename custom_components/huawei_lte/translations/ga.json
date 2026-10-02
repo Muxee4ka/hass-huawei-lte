@@ -1,0 +1,416 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "T\u00e1 an gl\u00e9as cumraithe cheana f\u00e9in",
+            "reauth_successful": "D'\u00e9irigh leis an athfh\u00edordheimhni\u00fa",
+            "unsupported_device": "Gl\u00e9as nach dtaca\u00edtear leis"
+        },
+        "error": {
+            "connection_timeout": "Am cr\u00edochnaithe nasc",
+            "incorrect_password": "Pasfhocal m\u00edcheart",
+            "incorrect_username": "Ainm \u00fas\u00e1ideora m\u00edcheart",
+            "invalid_auth": "F\u00edordheimhni\u00fa neamhbhail\u00ed",
+            "invalid_url": "URL neamhbhail\u00ed",
+            "login_attempts_exceeded": "S\u00e1ra\u00edodh an t-uasmh\u00e9id iarrachta\u00ed log\u00e1la isteach, d\u00e9an iarracht ar\u00eds ar ball",
+            "response_error": "Earr\u00e1id anaithnid \u00f3n ngl\u00e9as",
+            "ssl_error_try_plain": "Earr\u00e1id HTTPS, bain triail as URL HTTP simpl\u00ed le do thoil",
+            "ssl_error_try_unverified": "Earr\u00e1id HTTPS, d\u00e9an iarracht f\u00edor\u00fa teastais n\u00f3 URL HTTP simpl\u00ed a dh\u00edchumas\u00fa",
+            "unknown": "Earr\u00e1id gan choinne"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Pasfhocal",
+                    "username": "Ainm \u00fas\u00e1ideora"
+                },
+                "data_description": {
+                    "password": "Pasfhocal chun rochtain a fh\u00e1il ar API an r\u00f3daire. De ghn\u00e1th, mar an gc\u00e9anna leis an gceann a \u00fas\u00e1idtear le haghaidh comh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire.",
+                    "username": "Ainm \u00fas\u00e1ideora chun rochtain a fh\u00e1il ar API an r\u00f3daire. De ghn\u00e1th, mar an gc\u00e9anna leis an gceann a \u00fas\u00e1idtear le haghaidh comh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire. De ghn\u00e1th, ceachtar `admin`, n\u00f3 f\u00e1gtha folamh (molta m\u00e1 oibr\u00edonn s\u00e9 sin)."
+                },
+                "description": "Cuir isteach dinti\u00fair rochtana gl\u00e9is.",
+                "title": "T\u00e1 an f\u00edordheimhni\u00fa imithe in \u00e9ag do {name}"
+            },
+            "user": {
+                "data": {
+                    "password": "Pasfhocal",
+                    "url": "URL",
+                    "username": "Ainm \u00fas\u00e1ideora",
+                    "verify_ssl": "F\u00edoraigh teastas SSL"
+                },
+                "data_description": {
+                    "password": "Pasfhocal chun rochtain a fh\u00e1il ar API an r\u00f3daire. De ghn\u00e1th, mar an gc\u00e9anna leis an gceann a \u00fas\u00e1idtear le haghaidh comh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire.",
+                    "url": "Bun-URL chuig API an r\u00f3daire. De ghn\u00e1th, rud \u00e9igin cos\u00fail le `{sample_ip}`. Seo t\u00fas na h\u00e1ite a thaispe\u00e1ntar i mbrabhs\u00e1la\u00ed agus rochtain \u00e1 f\u00e1il ar chomh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire.",
+                    "username": "Ainm \u00fas\u00e1ideora chun rochtain a fh\u00e1il ar API an r\u00f3daire. De ghn\u00e1th, mar an gc\u00e9anna leis an gceann a \u00fas\u00e1idtear le haghaidh comh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire. De ghn\u00e1th, ceachtar `admin`, n\u00f3 f\u00e1gtha folamh (molta m\u00e1 oibr\u00edonn s\u00e9 sin).",
+                    "verify_ssl": "Cib\u00e9 ar cheart deimhni\u00fa SSL an r\u00f3daire a fh\u00edor\u00fa agus \u00e9 \u00e1 rochtain. Infheidhme ach amh\u00e1in m\u00e1 t\u00e1 rochtain ar an r\u00f3daire tr\u00ed HTTPS."
+                },
+                "description": "Cuir isteach sonra\u00ed rochtana gl\u00e9is.",
+                "title": "Cumraigh LTE Huawei"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "mobile_connection": {
+                "name": "Nasc soghluaiste"
+            },
+            "sms_storage_full": {
+                "name": "St\u00f3ras SMS l\u00e1n"
+            },
+            "wifi_status": {
+                "name": "St\u00e1das Wi-Fi"
+            }
+        },
+        "button": {
+            "clear_traffic_statistics": {
+                "name": "Staitistic\u00ed tr\u00e1chta soil\u00e9ire"
+            }
+        },
+        "select": {
+            "preferred_network_mode": {
+                "name": "M\u00f3d l\u00edonra is fearr leat",
+                "state": {
+                    "00": "4G/3G/2G uathoibr\u00edoch",
+                    "01": "2G amh\u00e1in",
+                    "02": "3G amh\u00e1in",
+                    "0201": "3G/2G uathoibr\u00edoch",
+                    "03": "4G amh\u00e1in",
+                    "0301": "4G/2G uathoibr\u00edoch",
+                    "0302": "4G/3G uathoibr\u00edoch"
+                }
+            }
+        },
+        "sensor": {
+            "arfcn": {
+                "name": "ARFCN"
+            },
+            "band": {
+                "name": "Banna"
+            },
+            "base_station_identity_code": {
+                "name": "C\u00f3d aitheantais an st\u00e1isi\u00fain bhun\u00e1ite"
+            },
+            "battery": {
+                "name": "Ceallra\u00ed"
+            },
+            "cell_id": {
+                "name": "Aitheantas Cill"
+            },
+            "cqi0": {
+                "name": "CQI 0"
+            },
+            "cqi1": {
+                "name": "CQI 1"
+            },
+            "current_connection_download": {
+                "name": "\u00cdosl\u00f3d\u00e1il nasc reatha"
+            },
+            "current_connection_duration": {
+                "name": "Fad an naisc reatha"
+            },
+            "current_connection_upload": {
+                "name": "Uasl\u00f3d\u00e1il nasc reatha"
+            },
+            "current_day_transfer": {
+                "name": "Aistri\u00fa an lae inniu"
+            },
+            "current_download_rate": {
+                "name": "R\u00e1ta \u00edosl\u00f3d\u00e1la reatha"
+            },
+            "current_month_download": {
+                "name": "\u00cdosl\u00f3d\u00e1il na m\u00edosa reatha"
+            },
+            "current_month_upload": {
+                "name": "Uasl\u00f3d\u00e1il na m\u00edosa reatha"
+            },
+            "current_upload_rate": {
+                "name": "R\u00e1ta uasl\u00f3d\u00e1la reatha"
+            },
+            "downlink_bandwidth": {
+                "name": "Bandaleithead \u00edosnasc"
+            },
+            "downlink_frequency": {
+                "name": "Minic\u00edocht S\u00edosnasc"
+            },
+            "downlink_mcs": {
+                "name": "S\u00edosnasc MCS"
+            },
+            "earfcn": {
+                "name": "EARFCN"
+            },
+            "ecio": {
+                "name": "EC/IO"
+            },
+            "enodeb_id": {
+                "name": "Aitheantas eNodeB"
+            },
+            "ims": {
+                "name": "IMS"
+            },
+            "lac": {
+                "name": "LAC"
+            },
+            "lte_downlink_frequency": {
+                "name": "Minic\u00edocht \u00edosnasc LTE"
+            },
+            "lte_uplink_frequency": {
+                "name": "Minic\u00edocht uasnasc LTE"
+            },
+            "max_download_rate": {
+                "name": "Uasr\u00e1ta \u00edosl\u00f3d\u00e1la"
+            },
+            "max_upload_rate": {
+                "name": "Uasr\u00e1ta uasl\u00f3d\u00e1la"
+            },
+            "mode": {
+                "name": "M\u00f3d"
+            },
+            "nei_cellid": {
+                "name": "Aitheantas cille comharsanachta"
+            },
+            "nrbler": {
+                "name": "R\u00e1ta earr\u00e1ide bloc 5G"
+            },
+            "nrcqi0": {
+                "name": "5G CQI 0"
+            },
+            "nrcqi1": {
+                "name": "5G CQI 1"
+            },
+            "nrdlbandwidth": {
+                "name": "Bandaleithead \u00edosnasc 5G"
+            },
+            "nrdlmcs": {
+                "name": "MCS \u00edosnasc 5G"
+            },
+            "nrearfcn": {
+                "name": "5G EARFCN"
+            },
+            "nrrank": {
+                "name": "Rang 5G"
+            },
+            "nrrsrp": {
+                "name": "5G RSRP"
+            },
+            "nrrsrq": {
+                "name": "5G RSRQ"
+            },
+            "nrsinr": {
+                "name": "5G SINR"
+            },
+            "nrtxpower": {
+                "name": "Cumhacht tarchuir 5G"
+            },
+            "nrulbandwidth": {
+                "name": "Bandaleithead suasnasc 5G"
+            },
+            "nrulmcs": {
+                "name": "MCS nasc suas 5G"
+            },
+            "operator_code": {
+                "name": "C\u00f3d oibreora"
+            },
+            "operator_name": {
+                "name": "Ainm an oibreora"
+            },
+            "operator_search_mode": {
+                "name": "M\u00f3d cuardaigh oibreora",
+                "state": {
+                    "0": "Uath",
+                    "1": "L\u00e1mhleabhar"
+                }
+            },
+            "pci": {
+                "name": "PCI"
+            },
+            "plmn": {
+                "name": "PLMN"
+            },
+            "preferred_network_mode": {
+                "name": "M\u00f3d l\u00edonra is fearr leat",
+                "state": {
+                    "00": "4G/3G/2G uathoibr\u00edoch",
+                    "01": "2G amh\u00e1in",
+                    "02": "3G amh\u00e1in",
+                    "0201": "3G/2G uathoibr\u00edoch",
+                    "03": "4G amh\u00e1in",
+                    "0301": "4G/2G uathoibr\u00edoch",
+                    "0302": "4G/3G uathoibr\u00edoch"
+                }
+            },
+            "primary_dns_server": {
+                "name": "Pr\u00edomhfhreastala\u00ed DNS"
+            },
+            "primary_ipv6_dns_server": {
+                "name": "Pr\u00edomhfhreastala\u00ed DNS IPv6"
+            },
+            "rac": {
+                "name": "RAC"
+            },
+            "rrc_status": {
+                "name": "St\u00e1das RRC"
+            },
+            "rscp": {
+                "name": "RSCP"
+            },
+            "rsrp": {
+                "name": "RSRP"
+            },
+            "rsrq": {
+                "name": "RSRQ"
+            },
+            "rssi": {
+                "name": "RSSI"
+            },
+            "rxlev": {
+                "name": "Leibh\u00e9al comhartha faighte"
+            },
+            "sc": {
+                "name": "C\u00f3d scrambl\u00e1la"
+            },
+            "secondary_dns_server": {
+                "name": "Freastala\u00ed DNS t\u00e1naisteach"
+            },
+            "secondary_ipv6_dns_server": {
+                "name": "Freastala\u00ed DNS t\u00e1naisteach IPv6"
+            },
+            "sinr": {
+                "name": "SINR"
+            },
+            "sms_capacity_device": {
+                "name": "Cumas SMS (gl\u00e9as)"
+            },
+            "sms_capacity_sim": {
+                "name": "Cumas SMS (SIM)"
+            },
+            "sms_deleted_device": {
+                "name": "SMS scriosta (gl\u00e9as)"
+            },
+            "sms_drafts_device": {
+                "name": "Dr\u00e9achta\u00ed SMS (gl\u00e9as)"
+            },
+            "sms_drafts_sim": {
+                "name": "Dr\u00e9achta\u00ed SMS (SIM)"
+            },
+            "sms_inbox_device": {
+                "name": "Bosca isteach SMS (gl\u00e9as)"
+            },
+            "sms_inbox_sim": {
+                "name": "Bosca isteach SMS (SIM)"
+            },
+            "sms_messages_sim": {
+                "name": "Teachtaireachta\u00ed SMS (SIM)"
+            },
+            "sms_new": {
+                "name": "SMS nua"
+            },
+            "sms_outbox_device": {
+                "name": "Bosca amach SMS (gl\u00e9as)"
+            },
+            "sms_outbox_sim": {
+                "name": "Bosca amach SMS (SIM)"
+            },
+            "sms_unread": {
+                "name": "SMS gan l\u00e9amh"
+            },
+            "sms_unread_device": {
+                "name": "SMS gan l\u00e9amh (gl\u00e9as)"
+            },
+            "sms_unread_sim": {
+                "name": "SMS gan l\u00e9amh (SIM)"
+            },
+            "tac": {
+                "name": "TAC"
+            },
+            "tdd": {
+                "name": "TDD"
+            },
+            "total_connected_duration": {
+                "name": "Fad ioml\u00e1n ceangailte"
+            },
+            "total_download": {
+                "name": "\u00cdosl\u00f3d\u00e1il ioml\u00e1n"
+            },
+            "total_upload": {
+                "name": "Uasl\u00f3d\u00e1il ioml\u00e1n"
+            },
+            "transmission_mode": {
+                "name": "Modh tarchuir"
+            },
+            "transmit_power": {
+                "name": "Cumhacht tarchuir"
+            },
+            "uplink_bandwidth": {
+                "name": "Bandaleithead suasnasc"
+            },
+            "uplink_frequency": {
+                "name": "Minic\u00edocht suasnasc"
+            },
+            "uplink_mcs": {
+                "name": "Suasnasc MCS"
+            },
+            "uptime": {
+                "name": "Aga f\u00f3naimh"
+            },
+            "wan_ip_address": {
+                "name": "Seoladh IP WAN"
+            },
+            "wan_ipv6_address": {
+                "name": "Seoladh IPv6 WAN"
+            },
+            "wdlfreq": {
+                "name": "Minic\u00edocht \u00edosnasc WCDMA"
+            },
+            "wifi_clients_connected": {
+                "name": "Cliant Wi-Fi ceangailte"
+            }
+        },
+        "switch": {
+            "mobile_data": {
+                "name": "Sonra\u00ed soghluaiste"
+            },
+            "wifi_guest_network": {
+                "name": "L\u00edonra aoi Wi-Fi"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "name": "Ainm na seirbh\u00edse f\u00f3gra\u00ed (t\u00e1 atos\u00fa ag teast\u00e1il le hathr\u00fa)",
+                    "recipient": "Faighteoir\u00ed f\u00f3gra\u00ed SMS",
+                    "track_wired_clients": "Rianaigh cliaint l\u00edonra sreangaithe",
+                    "unauthenticated_mode": "M\u00f3d neamh\u00fadaraithe (\u00e9il\u00edonn athr\u00fa athl\u00f3d\u00e1il)"
+                },
+                "data_description": {
+                    "name": "\u00das\u00e1idtear \u00e9 chun idirdheal\u00fa a dh\u00e9anamh idir seirbh\u00eds\u00ed f\u00f3gra ar eagla go bhfuil feist\u00ed iolracha LTE Huawei cumraithe. Tagann athruithe ar an luach rogha seo i bhfeidhm tar \u00e9is do Ch\u00fant\u00f3ir Baile a atos\u00fa.",
+                    "track_wired_clients": "Cib\u00e9 an riana\u00edonn aon\u00e1in rianaithe an ghl\u00e9is freisin cliaint at\u00e1 ceangailte le l\u00edonra Ethernet sreangaithe an r\u00f3daire, chomh maith le cliaint gan sreang.",
+                    "unauthenticated_mode": "C\u00e9 acu a rithfear i m\u00f3d neamhdheimhnithe. Sol\u00e1thra\u00edonn m\u00f3d neamhdheimhnithe sraith teoranta gn\u00e9ithe, ach d'fh\u00e9adfadh s\u00e9 cabhr\u00fa ar eagla go mbeadh fadhbanna ann rochtain a fh\u00e1il ar chomh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire \u00f3 bhrabhs\u00e1la\u00ed agus an comhth\u00e1th\u00fa gn\u00edomhach. Tagann athruithe ar an luach rogha seo i bhfeidhm tar \u00e9is athl\u00f3d\u00e1la an chomhth\u00e1thaithe."
+                }
+            }
+        }
+    },
+    "services": {
+        "resume_integration": {
+            "description": "Atosa\u00edonn s\u00e9 an comhth\u00e1th\u00fa ar fionra\u00ed.",
+            "fields": {
+                "url": {
+                    "description": "URL an r\u00f3daire chun comhth\u00e1th\u00fa a atos\u00fa; roghnach nuair nach bhfuil ach ceann amh\u00e1in cumraithe.",
+                    "name": "URL"
+                }
+            },
+            "name": "Comhth\u00e1th\u00fa atos\u00fa"
+        },
+        "suspend_integration": {
+            "description": "Cuireann s\u00e9 comhth\u00e1th\u00fa ar fionra\u00ed. Log\u00e1lann fionra\u00ed an comhth\u00e1th\u00fa amach \u00f3n r\u00f3daire, agus cuireann s\u00e9 stop le rochtain a fh\u00e1il air. \u00das\u00e1ideach m.sh. m\u00e1 t\u00e1 g\u00e1 le rochtain a fh\u00e1il ar chomh\u00e9adan gr\u00e9as\u00e1in an r\u00f3daire \u00f3 fhoinse eile amhail brabhs\u00e1la\u00ed gr\u00e9as\u00e1in go sealadach. Glaoigh ar an ngn\u00edomh 'Atosaigh comhth\u00e1th\u00fa' chun atos\u00fa.",
+            "fields": {
+                "url": {
+                    "description": "URL an r\u00f3daire le comhth\u00e1th\u00fa a chur ar fionra\u00ed; roghnach nuair nach bhfuil ach ceann amh\u00e1in cumraithe.",
+                    "name": "URL"
+                }
+            },
+            "name": "Cuir an comhth\u00e1th\u00fa ar fionra\u00ed"
+        }
+    }
+}

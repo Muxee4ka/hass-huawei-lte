@@ -1,0 +1,97 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Gailua dagoeneko konfiguratuta dago",
+            "reauth_successful": "Berrautortzea arrakastatsua izan da"
+        },
+        "error": {
+            "invalid_auth": "Autentifikazio baliogabea",
+            "invalid_url": "URL baliogabea",
+            "unknown": "Ustekabeko errorea"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Pasahitza",
+                    "username": "Erabiltzaile-izena"
+                },
+                "title": "{name}-entzako autortza iraungi da"
+            },
+            "user": {
+                "data": {
+                    "password": "Pasahitza",
+                    "url": "URL-a",
+                    "username": "Erabiltzaile-izena",
+                    "verify_ssl": "SSL ziurtagiria egiaztatu"
+                },
+                "title": "Huawei LTE konfiguratu"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "24ghz_wifi_status": {
+                "name": "Wi-Fiaren egoera (2,4 GHz)"
+            },
+            "5ghz_wifi_status": {
+                "name": "Wi-Fiaren egoera (5GHz)"
+            },
+            "wifi_status": {
+                "name": "Wi-Fiaren egoera"
+            }
+        },
+        "select": {
+            "preferred_network_mode": {
+                "state": {
+                    "00": "4G/3G/2G auto",
+                    "01": "2G bakarrik",
+                    "02": "3G bakarrik",
+                    "0201": "3G/2G automatikoa",
+                    "03": "4G bakarrik",
+                    "0301": "4G/2G automatikoa",
+                    "0302": "4G/3G automatikoa"
+                }
+            }
+        },
+        "sensor": {
+            "cell_id": {
+                "name": "Zalula IDa"
+            },
+            "mode": {
+                "name": "Modua"
+            },
+            "operator_search_mode": {
+                "state": {
+                    "0": "Automatikoa",
+                    "1": "Eskuzkoa"
+                }
+            },
+            "pci": {
+                "name": "PCI"
+            },
+            "preferred_network_mode": {
+                "state": {
+                    "00": "4G/3G/2G auto"
+                }
+            }
+        }
+    },
+    "services": {
+        "resume_integration": {
+            "fields": {
+                "url": {
+                    "name": "URL-a"
+                }
+            },
+            "name": "Integrazioa berrekin"
+        },
+        "suspend_integration": {
+            "fields": {
+                "url": {
+                    "name": "URL-a"
+                }
+            }
+        }
+    }
+}

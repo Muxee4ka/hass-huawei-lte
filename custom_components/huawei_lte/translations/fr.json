@@ -1,0 +1,424 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "L'appareil est d\u00e9j\u00e0 configur\u00e9",
+            "already_in_progress": "La configuration est d\u00e9j\u00e0 en cours. Veuillez terminer la configuration actuelle avant de recommencer.",
+            "reauth_successful": "La r\u00e9authentification a r\u00e9ussi",
+            "unsupported_device": "Appareil non pris en charge"
+        },
+        "error": {
+            "connection_timeout": "D\u00e9lai de connexion d\u00e9pass\u00e9",
+            "incorrect_password": "Mot de passe incorrect",
+            "incorrect_username": "Nom d'utilisateur incorrect",
+            "invalid_auth": "Authentification non valide",
+            "invalid_url": "URL non valide",
+            "login_attempts_exceeded": "Nombre maximal de tentatives de connexion d\u00e9pass\u00e9, veuillez r\u00e9essayer ult\u00e9rieurement",
+            "response_error": "Erreur inconnue de l'appareil",
+            "ssl_error_try_plain": "Erreur HTTPS, veuillez essayer une URL HTTP",
+            "ssl_error_try_unverified": "Erreur HTTPS, veuillez essayer de d\u00e9sactiver la v\u00e9rification de certificat ou une URL HTTP",
+            "unknown": "Erreur inattendue"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Mot de passe",
+                    "username": "Nom d'utilisateur"
+                },
+                "data_description": {
+                    "password": "Mot de passe pour acc\u00e9der \u00e0 l'API du routeur. G\u00e9n\u00e9ralement le m\u00eame que celui utilis\u00e9 pour l'interface web du routeur.",
+                    "username": "Nom d'utilisateur pour acc\u00e9der \u00e0 l'API du routeur. G\u00e9n\u00e9ralement le m\u00eame que celui utilis\u00e9 pour l'interface web du routeur. En g\u00e9n\u00e9ral, soit `admin`, soit laiss\u00e9 vide (recommand\u00e9 si cela fonctionne)."
+                },
+                "description": "Saisissez les informations d'identification permettant d'acc\u00e9der \u00e0 l'appareil.",
+                "title": "L'authentification a expir\u00e9 pour {name}"
+            },
+            "user": {
+                "data": {
+                    "password": "Mot de passe",
+                    "url": "URL",
+                    "username": "Nom d'utilisateur",
+                    "verify_ssl": "V\u00e9rifier le certificat SSL"
+                },
+                "data_description": {
+                    "password": "Mot de passe pour acc\u00e9der \u00e0 l'API du routeur. G\u00e9n\u00e9ralement le m\u00eame que celui utilis\u00e9 pour l'interface web du routeur.",
+                    "url": "URL de base de l'API du routeur. G\u00e9n\u00e9ralement quelque chose comme `{sample_ip}`. C'est le d\u00e9but de l'adresse affich\u00e9e dans un navigateur lors de l'acc\u00e8s \u00e0 l'interface web du routeur.",
+                    "username": "Nom d'utilisateur pour acc\u00e9der \u00e0 l'API du routeur. G\u00e9n\u00e9ralement le m\u00eame que celui utilis\u00e9 pour l'interface web du routeur. En g\u00e9n\u00e9ral, soit `admin`, soit laiss\u00e9 vide (recommand\u00e9 si cela fonctionne).",
+                    "verify_ssl": "Indique s'il faut v\u00e9rifier le certificat SSL du routeur lors de l'acc\u00e8s. Applicable uniquement si l'acc\u00e8s au routeur se fait via HTTPS."
+                },
+                "description": "Saisissez les d\u00e9tails d'acc\u00e8s \u00e0 l'appareil.",
+                "title": "Configurer Huawei LTE"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "24ghz_wifi_status": {
+                "name": "\u00c9tat du Wi-Fi (2,4 GHz)"
+            },
+            "5ghz_wifi_status": {
+                "name": "\u00c9tat du Wi-Fi (5 GHz)"
+            },
+            "mobile_connection": {
+                "name": "Connexion mobile"
+            },
+            "sms_storage_full": {
+                "name": "Stockage SMS plein"
+            },
+            "wifi_status": {
+                "name": "\u00c9tat du Wi-Fi"
+            }
+        },
+        "button": {
+            "clear_traffic_statistics": {
+                "name": "Effacer les statistiques de trafic"
+            }
+        },
+        "select": {
+            "preferred_network_mode": {
+                "name": "Mode r\u00e9seau pr\u00e9f\u00e9r\u00e9",
+                "state": {
+                    "00": "4G/3G/2G auto",
+                    "01": "2G uniquement",
+                    "02": "3G uniquement",
+                    "0201": "3G/2G auto",
+                    "03": "4G uniquement",
+                    "0301": "4G/2G auto",
+                    "0302": "4G/3G auto"
+                }
+            }
+        },
+        "sensor": {
+            "arfcn": {
+                "name": "ARFCN"
+            },
+            "band": {
+                "name": "Bande"
+            },
+            "base_station_identity_code": {
+                "name": "Code d'identit\u00e9 de la station de base"
+            },
+            "battery": {
+                "name": "Batterie"
+            },
+            "cell_id": {
+                "name": "ID de cellule"
+            },
+            "cqi0": {
+                "name": "CQI 0"
+            },
+            "cqi1": {
+                "name": "CQI 1"
+            },
+            "current_connection_download": {
+                "name": "T\u00e9l\u00e9chargement de la connexion actuelle"
+            },
+            "current_connection_duration": {
+                "name": "Dur\u00e9e de la connexion actuelle"
+            },
+            "current_connection_upload": {
+                "name": "T\u00e9l\u00e9versement de la connexion actuelle"
+            },
+            "current_day_transfer": {
+                "name": "Transfert du jour"
+            },
+            "current_download_rate": {
+                "name": "D\u00e9bit de t\u00e9l\u00e9chargement actuel"
+            },
+            "current_month_download": {
+                "name": "T\u00e9l\u00e9chargement du mois en cours"
+            },
+            "current_month_upload": {
+                "name": "T\u00e9l\u00e9versement du mois en cours"
+            },
+            "current_upload_rate": {
+                "name": "D\u00e9bit de t\u00e9l\u00e9versement actuel"
+            },
+            "downlink_bandwidth": {
+                "name": "Bande passante descendante"
+            },
+            "downlink_frequency": {
+                "name": "Fr\u00e9quence descendante"
+            },
+            "downlink_mcs": {
+                "name": "MCS descendant"
+            },
+            "earfcn": {
+                "name": "EARFCN"
+            },
+            "ecio": {
+                "name": "EC/IO"
+            },
+            "enodeb_id": {
+                "name": "ID eNodeB"
+            },
+            "ims": {
+                "name": "IMS"
+            },
+            "lac": {
+                "name": "LAC"
+            },
+            "lte_downlink_frequency": {
+                "name": "Fr\u00e9quence descendante LTE"
+            },
+            "lte_uplink_frequency": {
+                "name": "Fr\u00e9quence montante LTE"
+            },
+            "max_download_rate": {
+                "name": "D\u00e9bit de t\u00e9l\u00e9chargement maximal"
+            },
+            "max_upload_rate": {
+                "name": "D\u00e9bit d'envoi maximal"
+            },
+            "mode": {
+                "name": "Mode"
+            },
+            "nei_cellid": {
+                "name": "ID de cellule voisine"
+            },
+            "nrbler": {
+                "name": "Taux d'erreur de bloc 5G"
+            },
+            "nrcqi0": {
+                "name": "5G CQI 0"
+            },
+            "nrcqi1": {
+                "name": "5G CQI 1"
+            },
+            "nrdlbandwidth": {
+                "name": "Bande passante descendante 5G"
+            },
+            "nrdlmcs": {
+                "name": "MCS descendant 5G"
+            },
+            "nrearfcn": {
+                "name": "5G EARFCN"
+            },
+            "nrrank": {
+                "name": "Rang 5G"
+            },
+            "nrrsrp": {
+                "name": "5G RSRP"
+            },
+            "nrrsrq": {
+                "name": "5G RSRQ"
+            },
+            "nrsinr": {
+                "name": "5G SINR"
+            },
+            "nrtxpower": {
+                "name": "Puissance d'\u00e9mission 5G"
+            },
+            "nrulbandwidth": {
+                "name": "Bande passante montante 5G"
+            },
+            "nrulmcs": {
+                "name": "MCS montant 5G"
+            },
+            "operator_code": {
+                "name": "Code de l'op\u00e9rateur"
+            },
+            "operator_name": {
+                "name": "Nom de l'op\u00e9rateur"
+            },
+            "operator_search_mode": {
+                "name": "Mode de recherche de l'op\u00e9rateur",
+                "state": {
+                    "0": "Auto",
+                    "1": "Manuel"
+                }
+            },
+            "pci": {
+                "name": "PCI"
+            },
+            "plmn": {
+                "name": "PLMN"
+            },
+            "preferred_network_mode": {
+                "name": "Mode r\u00e9seau pr\u00e9f\u00e9r\u00e9",
+                "state": {
+                    "00": "4G/3G/2G auto",
+                    "01": "2G uniquement",
+                    "02": "3G uniquement",
+                    "0201": "3G/2G auto",
+                    "03": "4G uniquement",
+                    "0301": "4G/2G auto",
+                    "0302": "4G/3G auto"
+                }
+            },
+            "primary_dns_server": {
+                "name": "Serveur DNS primaire"
+            },
+            "primary_ipv6_dns_server": {
+                "name": "Serveur DNS IPv6 primaire"
+            },
+            "rac": {
+                "name": "RAC"
+            },
+            "rrc_status": {
+                "name": "Statut RRC"
+            },
+            "rscp": {
+                "name": "RSCP"
+            },
+            "rsrp": {
+                "name": "RSRP"
+            },
+            "rsrq": {
+                "name": "RSRQ"
+            },
+            "rssi": {
+                "name": "RSSI"
+            },
+            "rxlev": {
+                "name": "Niveau de signal re\u00e7u"
+            },
+            "sc": {
+                "name": "Code de brouillage"
+            },
+            "secondary_dns_server": {
+                "name": "Serveur DNS secondaire"
+            },
+            "secondary_ipv6_dns_server": {
+                "name": "Serveur DNS IPv6 secondaire"
+            },
+            "sinr": {
+                "name": "SINR"
+            },
+            "sms_capacity_device": {
+                "name": "Capacit\u00e9 SMS (appareil)"
+            },
+            "sms_capacity_sim": {
+                "name": "Capacit\u00e9 SMS (SIM)"
+            },
+            "sms_deleted_device": {
+                "name": "SMS supprim\u00e9s (appareil)"
+            },
+            "sms_drafts_device": {
+                "name": "Brouillons SMS (appareil)"
+            },
+            "sms_drafts_sim": {
+                "name": "Brouillons SMS (SIM)"
+            },
+            "sms_inbox_device": {
+                "name": "Bo\u00eete de r\u00e9ception SMS (appareil)"
+            },
+            "sms_inbox_sim": {
+                "name": "Bo\u00eete de r\u00e9ception SMS (SIM)"
+            },
+            "sms_messages_sim": {
+                "name": "Messages SMS (SIM)"
+            },
+            "sms_new": {
+                "name": "Nouveaux SMS"
+            },
+            "sms_outbox_device": {
+                "name": "Bo\u00eete d'envoi SMS (appareil)"
+            },
+            "sms_outbox_sim": {
+                "name": "Bo\u00eete d'envoi SMS (SIM)"
+            },
+            "sms_unread": {
+                "name": "SMS non lus"
+            },
+            "sms_unread_device": {
+                "name": "SMS non lus (appareil)"
+            },
+            "sms_unread_sim": {
+                "name": "SMS non lus (SIM)"
+            },
+            "tac": {
+                "name": "TAC"
+            },
+            "tdd": {
+                "name": "TDD"
+            },
+            "total_connected_duration": {
+                "name": "Dur\u00e9e totale de connexion"
+            },
+            "total_download": {
+                "name": "T\u00e9l\u00e9chargement total"
+            },
+            "total_upload": {
+                "name": "T\u00e9l\u00e9versement total"
+            },
+            "transmission_mode": {
+                "name": "Mode d'\u00e9mission"
+            },
+            "transmit_power": {
+                "name": "Puissance d'\u00e9mission"
+            },
+            "uplink_bandwidth": {
+                "name": "Bande passante montante"
+            },
+            "uplink_frequency": {
+                "name": "Fr\u00e9quence montante"
+            },
+            "uplink_mcs": {
+                "name": "MCS montant"
+            },
+            "uptime": {
+                "name": "Temps de fonctionnement"
+            },
+            "wan_ip_address": {
+                "name": "Adresse IP WAN"
+            },
+            "wan_ipv6_address": {
+                "name": "Adresse IPv6 WAN"
+            },
+            "wdlfreq": {
+                "name": "Fr\u00e9quence de liaison descendante WCDMA"
+            },
+            "wifi_clients_connected": {
+                "name": "Clients Wi-Fi connect\u00e9s"
+            }
+        },
+        "switch": {
+            "mobile_data": {
+                "name": "Donn\u00e9es mobiles"
+            },
+            "wifi_guest_network": {
+                "name": "R\u00e9seau Wi-Fi invit\u00e9"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "name": "Nom du service de notification (red\u00e9marrage requis)",
+                    "recipient": "Destinataires des notifications SMS",
+                    "track_wired_clients": "Suivre les clients du r\u00e9seau filaire",
+                    "unauthenticated_mode": "Mode non authentifi\u00e9 (le changement n\u00e9cessite un rechargement)"
+                },
+                "data_description": {
+                    "name": "Utilis\u00e9 pour distinguer les services de notification lorsque plusieurs appareils Huawei LTE sont configur\u00e9s. Les modifications de cette option prennent effet apr\u00e8s le red\u00e9marrage de Home Assistant.",
+                    "recipient": "Liste, s\u00e9par\u00e9e par des virgules, des num\u00e9ros de t\u00e9l\u00e9phone SMS destinataires par d\u00e9faut pour le service de notification, utilis\u00e9s lorsque l'exp\u00e9diteur de la notification n'en sp\u00e9cifie aucun.",
+                    "track_wired_clients": "Indique si les entit\u00e9s de suivi de pr\u00e9sence suivent \u00e9galement les clients connect\u00e9s au r\u00e9seau Ethernet filaire du routeur, en plus des clients sans fil.",
+                    "unauthenticated_mode": "Indique s'il faut fonctionner en mode non authentifi\u00e9. Le mode non authentifi\u00e9 offre un ensemble limit\u00e9 de fonctionnalit\u00e9s, mais peut aider en cas de probl\u00e8mes d'acc\u00e8s \u00e0 l'interface web du routeur depuis un navigateur lorsque l'int\u00e9gration est active. Les modifications de cette option prennent effet apr\u00e8s le rechargement de l'int\u00e9gration."
+                }
+            }
+        }
+    },
+    "services": {
+        "resume_integration": {
+            "description": "Reprend l'int\u00e9gration suspendue.",
+            "fields": {
+                "url": {
+                    "description": "URL du routeur pour lequel reprendre l'int\u00e9gration\u00a0; facultatif lorsqu'un seul est configur\u00e9.",
+                    "name": "URL"
+                }
+            },
+            "name": "Reprendre l'int\u00e9gration"
+        },
+        "suspend_integration": {
+            "description": "Suspend l'int\u00e9gration. La suspension d\u00e9connecte l'int\u00e9gration du routeur et cesse d'y acc\u00e9der. Utile par exemple lorsqu'il faut temporairement acc\u00e9der \u00e0 l'interface web du routeur depuis une autre source telle qu'un navigateur web. Appelez l'action \u00ab Reprendre l'int\u00e9gration \u00bb pour reprendre.",
+            "fields": {
+                "url": {
+                    "description": "URL du routeur pour lequel suspendre l'int\u00e9gration\u00a0; facultatif lorsqu'un seul est configur\u00e9.",
+                    "name": "URL"
+                }
+            },
+            "name": "Suspendre l'int\u00e9gration"
+        }
+    }
+}

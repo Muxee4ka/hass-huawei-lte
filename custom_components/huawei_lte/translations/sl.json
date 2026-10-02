@@ -1,0 +1,72 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Naprava je \u017ee konfigurirana",
+            "reauth_successful": "Ponovna avtentikacija je bila uspe\u0161na"
+        },
+        "error": {
+            "connection_timeout": "\u010casovna omejitev povezave",
+            "incorrect_password": "Nepravilno geslo",
+            "incorrect_username": "Nepravilno uporabni\u0161ko ime",
+            "invalid_auth": "Neveljavna avtentikacija",
+            "invalid_url": "Neveljaven URL",
+            "login_attempts_exceeded": "Najve\u010d poskusov prijave prese\u017eeno, prosimo, poskusite znova pozneje",
+            "response_error": "Neznana napaka iz naprave",
+            "unknown": "Nepri\u010dakovana napaka"
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Geslo",
+                    "username": "Uporabni\u0161ko ime"
+                },
+                "title": "Preverjanje pristnosti za {name} je poteklo"
+            },
+            "user": {
+                "data": {
+                    "password": "Geslo",
+                    "url": "URL",
+                    "username": "Uporabni\u0161ko ime",
+                    "verify_ssl": "Preveri SSL certifikat"
+                },
+                "description": "Vnesite podatke za dostop do naprave.",
+                "title": "Konfigurirajte Huawei LTE"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "operator_search_mode": {
+                "state": {
+                    "0": "Samodejno"
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "name": "Ime storitve obve\u0161\u010danja (sprememba zahteva ponovni zagon)",
+                    "recipient": "Prejemniki obvestil SMS"
+                }
+            }
+        }
+    },
+    "services": {
+        "resume_integration": {
+            "fields": {
+                "url": {
+                    "name": "URL"
+                }
+            }
+        },
+        "suspend_integration": {
+            "fields": {
+                "url": {
+                    "name": "URL"
+                }
+            }
+        }
+    }
+}
