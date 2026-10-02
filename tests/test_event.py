@@ -122,3 +122,17 @@ async def test_diagnostics_redacts_sms(hass, hass_client):
     diag = await get_diagnostics_for_config_entry(hass, hass_client, entry)
     assert diag["router"]["sms_sms_list"] == "**REDACTED**"
     assert "код 1234" not in str(diag)
+
+
+async def test_list_error_does_not_break_setup_or_polling(hass):
+    from huawei_lte_api.exceptions import ResponseErrorException
+
+    client = sms_client([raw_sms(1)])
+    client.sms.get_sms_list.side_effect = ResponseErrorException("busy", 125003)
+    entry = await setup_router(hass, client)
+    assert entry.state is ConfigEntryState.LOADED
+    client.lan.host_info.reset_mock()
+    set_inbox(client, [raw_sms(1), raw_sms(2)], unread=1)
+    client.sms.get_sms_list.side_effect = KeyError("Index")
+    await tick(hass)
+    client.lan.host_info.assert_called()  # rest of update() still ran

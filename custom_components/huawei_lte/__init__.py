@@ -307,7 +307,17 @@ class Router:
         return indexes
 
     def _update_sms(self) -> None:
-        """Fetch the inbox when counts moved and dispatch unseen messages."""
+        """Fetch the inbox when counts moved and dispatch unseen messages.
+
+        Never raises: a bad SMS response must not fail setup or skip the rest
+        of update() (which would freeze every other entity).
+        """
+        try:
+            self._update_sms_unsafe()
+        except Exception:  # noqa: BLE001
+            _LOGGER.warning("SMS inbox update failed, will retry", exc_info=True)
+
+    def _update_sms_unsafe(self) -> None:
         subscribers = self.subscriptions.get(KEY_SMS_SMS_LIST)
         if not subscribers:
             return
@@ -321,12 +331,13 @@ class Router:
             return
         self.data.pop(KEY_SMS_SMS_LIST, None)
         self._get_data(KEY_SMS_SMS_LIST, lambda: self._fetch_sms_page(1))
-        if KEY_SMS_SMS_LIST not in self.data or self.sms_tracker is None:
+        response = self.data.get(KEY_SMS_SMS_LIST)
+        if response is None or self.sms_tracker is None:
             return  # failed or unsupported; retried next cycle if still subscribed
         if SMS_EVENT_SUBSCRIBER not in subscribers:
             return  # initial scan only probes support; entities are not listening yet
+        new = self.sms_tracker.process(parse_sms_list(response))
         self._sms_count_signature = signature
-        new = self.sms_tracker.process(parse_sms_list(self.data[KEY_SMS_SMS_LIST]))
         if self.sms_store is not None:
             self.hass.loop.call_soon_threadsafe(
                 self.sms_store.async_delay_save, self.sms_tracker.as_data, SMS_SAVE_DELAY
