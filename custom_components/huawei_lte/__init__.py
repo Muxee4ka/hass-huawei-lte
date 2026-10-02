@@ -56,12 +56,14 @@ from .const import (
     ADMIN_SERVICES,
     ALL_KEYS,
     CONF_MANUFACTURER,
+    CONF_SMS_AFTER_RECEIVE,
     CONF_UNAUTHENTICATED_MODE,
     CONF_UPNP_UDN,
     CONNECTION_TIMEOUT,
     DEFAULT_DEVICE_NAME,
     DEFAULT_MANUFACTURER,
     DEFAULT_NOTIFY_SERVICE_NAME,
+    DEFAULT_SMS_AFTER_RECEIVE,
     DOMAIN,
     HUAWEI_LTE_CONFIG,
     KEY_DEVICE_BASIC_INFORMATION,
@@ -82,6 +84,8 @@ from .const import (
     KEY_WLAN_WIFI_GUEST_NETWORK_SWITCH,
     SERVICE_RESUME_INTEGRATION,
     SERVICE_SUSPEND_INTEGRATION,
+    SMS_AFTER_RECEIVE_DELETE,
+    SMS_AFTER_RECEIVE_MARK_READ,
     SMS_EVENT_SUBSCRIBER,
     SMS_PAGE_SIZE,
     SMS_RECEIVED_SIGNAL,
@@ -307,6 +311,18 @@ class Router:
 
     def _sms_after_receive(self, sms: Sms) -> None:
         """Apply the configured after-receive action."""
+        action = self.config_entry.options.get(
+            CONF_SMS_AFTER_RECEIVE, DEFAULT_SMS_AFTER_RECEIVE
+        )
+        try:
+            if action == SMS_AFTER_RECEIVE_MARK_READ:
+                self.client.sms.set_read(sms.index)
+            elif action == SMS_AFTER_RECEIVE_DELETE:
+                self.client.sms.delete_sms(sms.index)
+        except Exception:  # noqa: BLE001
+            _LOGGER.warning(
+                "SMS %s: %s after receive failed", sms.index, action, exc_info=True
+            )
 
     def logout(self) -> None:
         """Log out router session."""

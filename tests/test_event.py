@@ -29,48 +29,48 @@ def capture(hass: HomeAssistant) -> list[int]:
     return fired
 
 
-async def test_first_run_is_silent(hass, freezer):
+async def test_first_run_is_silent(hass):
     client = sms_client([raw_sms(1), raw_sms(2), raw_sms(3)])
     await setup_router(hass, client)
     fired = capture(hass)
-    await tick(hass, freezer)
+    await tick(hass)
     assert fired == []
     assert hass.states.get(EVENT_ENTITY).state == STATE_UNKNOWN
 
 
-async def test_new_sms_fires_event(hass, freezer):
+async def test_new_sms_fires_event(hass):
     old = [raw_sms(1), raw_sms(2)]
     client = sms_client(old)
     await setup_router(hass, client)
-    await tick(hass, freezer)
+    await tick(hass)
     set_inbox(client, [*old, raw_sms(3, phone="RSCHS", text="Внимание!")], unread=1)
-    await tick(hass, freezer)
+    await tick(hass)
     attrs = hass.states.get(EVENT_ENTITY).attributes
     assert attrs["event_type"] == "received"
     assert (attrs["phone"], attrs["text"], attrs["index"]) == ("RSCHS", "Внимание!", 3)
     assert attrs["date"] == "2026-10-02 14:00:03"
 
 
-async def test_several_new_fire_oldest_first(hass, freezer):
+async def test_several_new_fire_oldest_first(hass):
     client = sms_client([raw_sms(1)])
     await setup_router(hass, client)
-    await tick(hass, freezer)
+    await tick(hass)
     fired = capture(hass)
     set_inbox(client, [raw_sms(1), raw_sms(2), raw_sms(3)], unread=2)
-    await tick(hass, freezer)
+    await tick(hass)
     assert fired == [2, 3]
 
 
-async def test_unchanged_counts_skip_list(hass, freezer):
+async def test_unchanged_counts_skip_list(hass):
     client = sms_client([raw_sms(1)])
     await setup_router(hass, client)
-    await tick(hass, freezer)
+    await tick(hass)
     client.sms.get_sms_list.reset_mock()
-    await tick(hass, freezer)
+    await tick(hass)
     client.sms.get_sms_list.assert_not_called()
 
 
-async def test_sms_while_down_fires_once(hass, hass_storage, freezer):
+async def test_sms_while_down_fires_once(hass, hass_storage):
     hass_storage["huawei_lte.sms_seen.test_entry"] = {
         "version": 1,
         "minor_version": 1,
@@ -80,15 +80,15 @@ async def test_sms_while_down_fires_once(hass, hass_storage, freezer):
     client = sms_client([raw_sms(1), raw_sms(2), raw_sms(3)], unread=1)
     await setup_router(hass, client)
     fired = capture(hass)
-    await tick(hass, freezer)
-    await tick(hass, freezer)
+    await tick(hass)
+    await tick(hass)
     assert fired == [3]
 
 
 async def test_journal_persisted(hass, hass_storage, freezer):
     client = sms_client([raw_sms(1)])
     await setup_router(hass, client)
-    await tick(hass, freezer)
+    await tick(hass)
     freezer.tick(timedelta(seconds=5))
     async_fire_time_changed(hass)
     await hass.async_block_till_done()
@@ -105,13 +105,13 @@ async def test_list_not_supported_no_entity(hass):
     assert hass.states.get(EVENT_ENTITY) is None
 
 
-async def test_unload_after_key_dropped(hass, freezer):
+async def test_unload_after_key_dropped(hass):
     client = sms_client([raw_sms(1)])
     entry = await setup_router(hass, client)
-    await tick(hass, freezer)
+    await tick(hass)
     set_inbox(client, [raw_sms(1), raw_sms(2)], unread=1)
     client.sms.get_sms_list.side_effect = ResponseErrorNotSupportedException("nope", 100002)
-    await tick(hass, freezer)
+    await tick(hass)
     assert await hass.config_entries.async_unload(entry.entry_id)
     assert entry.state is ConfigEntryState.NOT_LOADED
 

@@ -1,13 +1,8 @@
 """Helpers for SMS tests on top of the core magic_client."""
 
-from datetime import timedelta
 from unittest.mock import MagicMock, patch
 
-from freezegun.api import FrozenDateTimeFactory
-from pytest_homeassistant_custom_component.common import (
-    MockConfigEntry,
-    async_fire_time_changed,
-)
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.huawei_lte.const import DOMAIN
 from homeassistant.const import CONF_URL
@@ -66,9 +61,13 @@ async def setup_router(
     return entry
 
 
-async def tick(hass: HomeAssistant, freezer: FrozenDateTimeFactory) -> None:
-    """Run one periodic Router.update and let dispatched events land."""
-    freezer.tick(timedelta(seconds=31))
-    async_fire_time_changed(hass)
+async def tick(hass: HomeAssistant) -> None:
+    """Run one periodic Router.update and let dispatched events land.
+
+    Calls the same Router.update the interval timer runs. Driving the timer with
+    a frozen clock proved flaky: a delayed first fire coalesced with the next one.
+    """
+    entry = hass.config_entries.async_loaded_entries(DOMAIN)[0]
+    await hass.async_add_executor_job(entry.runtime_data.update)
     await hass.async_block_till_done()
     await hass.async_block_till_done()

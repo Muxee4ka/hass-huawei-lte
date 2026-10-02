@@ -30,6 +30,11 @@ from homeassistant.const import (
     CONF_VERIFY_SSL,
 )
 from homeassistant.core import callback
+from homeassistant.helpers.selector import (
+    SelectSelector,
+    SelectSelectorConfig,
+    SelectSelectorMode,
+)
 from homeassistant.helpers.service_info.ssdp import (
     ATTR_UPNP_FRIENDLY_NAME,
     ATTR_UPNP_MANUFACTURER,
@@ -43,15 +48,18 @@ from homeassistant.helpers.service_info.ssdp import (
 from . import HuaweiLteConfigEntry
 from .const import (
     CONF_MANUFACTURER,
+    CONF_SMS_AFTER_RECEIVE,
     CONF_TRACK_WIRED_CLIENTS,
     CONF_UNAUTHENTICATED_MODE,
     CONF_UPNP_UDN,
     CONNECTION_TIMEOUT,
     DEFAULT_DEVICE_NAME,
     DEFAULT_NOTIFY_SERVICE_NAME,
+    DEFAULT_SMS_AFTER_RECEIVE,
     DEFAULT_TRACK_WIRED_CLIENTS,
     DEFAULT_UNAUTHENTICATED_MODE,
     DOMAIN,
+    SMS_AFTER_RECEIVE_OPTIONS,
 )
 from .utils import get_device_macs, non_verifying_requests_session
 
@@ -414,6 +422,18 @@ class HuaweiLteOptionsFlow(OptionsFlow):
                         CONF_UNAUTHENTICATED_MODE, DEFAULT_UNAUTHENTICATED_MODE
                     ),
                 ): bool,
+                vol.Optional(
+                    CONF_SMS_AFTER_RECEIVE,
+                    default=self.config_entry.options.get(
+                        CONF_SMS_AFTER_RECEIVE, DEFAULT_SMS_AFTER_RECEIVE
+                    ),
+                ): SelectSelector(
+                    SelectSelectorConfig(
+                        options=SMS_AFTER_RECEIVE_OPTIONS,
+                        translation_key=CONF_SMS_AFTER_RECEIVE,
+                        mode=SelectSelectorMode.DROPDOWN,
+                    )
+                ),
             }
         )
         return self.async_show_form(
