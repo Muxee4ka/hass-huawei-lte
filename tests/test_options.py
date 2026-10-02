@@ -74,3 +74,24 @@ async def test_options_flow_sets_value(hass):
         },
     )
     assert entry.options[CONF_SMS_AFTER_RECEIVE] == "delete"
+
+
+async def test_delete_keeps_catching_back_to_back_sms(hass):
+    """With delete, each SMS leaves the counts at (1, 1); the next one must still fire."""
+    client = sms_client([])
+    await setup_router(hass, client, options={CONF_SMS_AFTER_RECEIVE: "delete"})
+    await tick(hass)
+    fired = []
+
+    @callback
+    def _listener(event):
+        new = event.data["new_state"]
+        if event.data["entity_id"] == EVENT_ENTITY and new and "index" in new.attributes:
+            fired.append(new.attributes["index"])
+
+    hass.bus.async_listen(EVENT_STATE_CHANGED, _listener)
+    set_inbox(client, [raw_sms(1)], unread=1)
+    await tick(hass)
+    set_inbox(client, [raw_sms(2)], unread=1)  # 1 deleted by HA, 2 arrived: still (1, 1)
+    await tick(hass)
+    assert fired == [1, 2]

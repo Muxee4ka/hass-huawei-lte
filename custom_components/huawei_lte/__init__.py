@@ -347,10 +347,16 @@ class Router:
                 self.client.sms.set_read(sms.index)
             elif action == SMS_AFTER_RECEIVE_DELETE:
                 self.client.sms.delete_sms(sms.index)
+            else:
+                return
         except Exception:  # noqa: BLE001
             _LOGGER.warning(
                 "SMS %s: %s after receive failed", sms.index, action, exc_info=True
             )
+            return
+        # We changed the counts ourselves; the next SMS can bring them back to the
+        # remembered pair (e.g. delete: always (1, 1)), so force a list fetch.
+        self._sms_count_signature = None
 
     def logout(self) -> None:
         """Log out router session."""
